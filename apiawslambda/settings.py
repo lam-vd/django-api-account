@@ -5,14 +5,6 @@ from datetime import timedelta
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECURE_HSTS_SECONDS = 31536000  # 1 năm (chỉ dùng khi triển khai HTTPS)
-SECURE_SSL_REDIRECT = True       # Chuyển hướng HTTP sang HTTPS
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
-SECURE_BROWSER_XSS_FILTER = True
-SECURE_CONTENT_TYPE_NOSNIFF = True
-X_FRAME_OPTIONS = 'DENY'
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
@@ -120,3 +112,38 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# SECURE_HSTS_SECONDS = 31536000  # 1 năm (chỉ dùng khi triển khai HTTPS)
+# SECURE_SSL_REDIRECT = True       # Chuyển hướng HTTP sang HTTPS
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = 'DENY'
+
+# Cấu hình REST Framework, sử dụng JWT cho xác thực
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',  # Mặc định chỉ cho phép các API yêu cầu người dùng đã xác thực
+    ],
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.AnonRateThrottle',  # Dành cho người dùng chưa đăng nhập
+        'rest_framework.throttling.UserRateThrottle',  # Dành cho người dùng đã đăng nhập
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '5/min',  # Giới hạn 5 request/phút cho người dùng ẩn danh
+        'user': '10/min',  # Giới hạn 10 request/phút cho người dùng đã xác thực
+    },
+}
+
+# Cấu hình SimpleJWT
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),   # Thời gian sống của access token
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),        # Thời gian sống của refresh token
+    'ROTATE_REFRESH_TOKENS': True,
+    'BLACKLIST_AFTER_ROTATION': True,
+}
