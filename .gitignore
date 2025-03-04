@@ -1,0 +1,51 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Cython debug symbols
+cython_debug/
+
+# Django stuff:
+*.log
+*.pot
+*.pyc
+*.pyo
+*.pyd
+*.sqlite3
+db.sqlite3
+
+# If your build process includes running tests, you can also ignore test output
+test-results/
+
+# Ignore virtual environment directories
+venv/
+env/
+ENV/
+.venv/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# IDE-specific files
+.vscode/
+.idea/
+.project
+.pydevproject
+
+# Python packaging
+*.egg-info/
+*.egg
+dist/
+build/
+*.bak
+
+# Docker
+docker-compose.override.yml
+Dockerfile
+
+# CI/CD
+.circleci/
+.travis.yml
+.github/
